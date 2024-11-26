@@ -61,7 +61,7 @@ export default function EditJudoClass({ params }: { params: { id: string } }) {
       ...classData,
       techniques: [...classData.techniques, {
         name: '',
-        category: 'throws',
+        category: 'tachi-waza',
         notes: '',
       }],
     });
@@ -81,7 +81,7 @@ export default function EditJudoClass({ params }: { params: { id: string } }) {
       partnerWork: [...classData.partnerWork, {
         partnerName: '',
         duration: 15,
-        type: 'drilling',
+        type: 'uchikomi',
         notes: '',
       }],
     });

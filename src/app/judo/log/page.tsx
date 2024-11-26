@@ -313,7 +313,7 @@ export default function LogJudoClass() {
                         value={session.intensity}
                         onChange={(e) => {
                           const newSessions = [...classData.sparringSessions];
-                          newSessions[index].intensity = e.target.value;
+                          newSessions[index].intensity = e.target.value as 'light' | 'medium' | 'hard';
                           setClassData({...classData, sparringSessions: newSessions});
                         }}
                       >
