@@ -46,7 +46,7 @@ export default function WorkoutTemplates() {
     }
   };
 
-  const useTemplate = async (templateId: string) => {
+  const handleUseTemplate = async (templateId: string) => {
     try {
       const res = await fetch(`/api/workouts/templates/${templateId}/use`, {
         method: 'POST',
@@ -171,7 +171,7 @@ export default function WorkoutTemplates() {
                       </svg>
                     </label>
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                      <li><button onClick={() => useTemplate(template._id)}>Use Template</button></li>
+                      <li><button onClick={() => handleUseTemplate(template._id)}>Use Template</button></li>
                       <li><Link href={`/workouts/templates/${template._id}/edit`}>Edit Template</Link></li>
                       <li><button onClick={() => deleteTemplate(template._id)} className="text-error">Delete Template</button></li>
                     </ul>

@@ -129,7 +129,7 @@ export default function Login() {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body text-center">
             <p>
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="link link-primary">
                 Register here
               </Link>
