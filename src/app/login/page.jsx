@@ -25,6 +25,7 @@ function LoginForm() {
         redirect: false,
         email: formData.email,
         password: formData.password,
+        callbackUrl: '/dashboard'
       });
 
       if (result.error) {
