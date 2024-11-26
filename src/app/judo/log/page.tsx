@@ -12,6 +12,7 @@ export default function LogJudoClass() {
   const [classData, setClassData] = useState<JudoClass>({
     date: new Date().toISOString().split('T')[0],
     duration: 60,
+    type: 'regular',
     techniques: [],
     partnerWork: [],
     sparringSessions: [],
@@ -46,7 +47,7 @@ export default function LogJudoClass() {
       ...classData,
       techniques: [...classData.techniques, {
         name: '',
-        category: 'throws',
+        category: 'tachi-waza',
         notes: '',
       }],
     });
@@ -58,7 +59,7 @@ export default function LogJudoClass() {
       partnerWork: [...classData.partnerWork, {
         partnerName: '',
         duration: 15,
-        type: 'drilling',
+        type: 'uchikomi',
         notes: '',
       }],
     });
