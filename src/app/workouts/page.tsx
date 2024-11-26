@@ -19,6 +19,8 @@ interface Workout {
   duration: number;
   exercises: Exercise[];
   notes?: string;
+  template: boolean;
+  templateName: string;
 }
 
 export default function WorkoutsList() {
@@ -95,9 +97,14 @@ export default function WorkoutsList() {
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">My Workouts</h1>
-          <Link href="/workouts/create" className="btn btn-primary">
-            Create Workout
-          </Link>
+          <div className="space-x-2">
+            <Link href="/workouts/templates" className="btn btn-secondary">
+              Templates
+            </Link>
+            <Link href="/workouts/create" className="btn btn-primary">
+              Create Workout
+            </Link>
+          </div>
         </div>
 
         <div className="card bg-base-200 mb-6">
