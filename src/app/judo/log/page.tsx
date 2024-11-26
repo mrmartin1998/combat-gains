@@ -158,7 +158,7 @@ export default function LogJudoClass() {
                     value={technique.category}
                     onChange={(e) => {
                       const newTechniques = [...classData.techniques];
-                      newTechniques[index].category = e.target.value;
+                      newTechniques[index].category = e.target.value as 'tachi-waza' | 'ne-waza' | 'ukemi' | 'other';
                       setClassData({...classData, techniques: newTechniques});
                     }}
                   >
@@ -217,7 +217,7 @@ export default function LogJudoClass() {
                     value={work.type}
                     onChange={(e) => {
                       const newPartnerWork = [...classData.partnerWork];
-                      newPartnerWork[index].type = e.target.value;
+                      newPartnerWork[index].type = e.target.value as 'uchikomi' | 'nagekomi' | 'drill' | 'situation';
                       setClassData({...classData, partnerWork: newPartnerWork});
                     }}
                   >
