@@ -4,7 +4,7 @@ import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import { authOptions } from '../auth/[...nextauth]/route';
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(workout, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Workout creation error:', error);
     return NextResponse.json(
       { message: error.message || 'Internal server error' },
@@ -49,7 +49,7 @@ export async function GET() {
       .sort({ date: -1 });
 
     return NextResponse.json(workouts);
-  } catch (error: any) {
+  } catch (error) {
     console.error('Workout fetch error:', error);
     return NextResponse.json(
       { message: error.message || 'Internal server error' },

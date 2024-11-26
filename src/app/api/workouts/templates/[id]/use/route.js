@@ -4,10 +4,7 @@ import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import { authOptions } from '../../../../auth/[...nextauth]/route';
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -35,18 +32,18 @@ export async function POST(
     const workout = await Workout.create({
       userId: session.user.id,
       type: template.type,
-      date: new Date(),
       duration: template.duration,
       exercises: template.exercises,
       notes: template.notes,
-      template: false
+      template: false,
+      date: new Date()
     });
 
     return NextResponse.json(workout);
-  } catch (error: any) {
-    console.error('Template use error:', error);
+  } catch (error) {
+    console.error('Create from template error:', error);
     return NextResponse.json(
-      { message: error.message || 'Internal server error' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }

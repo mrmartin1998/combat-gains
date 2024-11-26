@@ -4,10 +4,7 @@ import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import { authOptions } from '../../../auth/[...nextauth]/route';
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -33,18 +30,16 @@ export async function GET(
     }
 
     return NextResponse.json(template);
-  } catch (error: any) {
+  } catch (error) {
+    console.error('Fetch template error:', error);
     return NextResponse.json(
-      { message: error.message || 'Internal server error' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -56,11 +51,12 @@ export async function PUT(
       );
     }
 
-    const template = await Workout.findOne({
-      _id: params.id,
-      userId: session.user.id,
-      template: true
-    });
+    const data = await req.json();
+    const template = await Workout.findOneAndUpdate(
+      { _id: params.id, userId: session.user.id, template: true },
+      data,
+      { new: true, runValidators: true }
+    );
 
     if (!template) {
       return NextResponse.json(
@@ -69,26 +65,17 @@ export async function PUT(
       );
     }
 
-    const updates = await req.json();
-    const updatedTemplate = await Workout.findByIdAndUpdate(
-      params.id,
-      { ...updates, template: true },
-      { new: true }
-    );
-
-    return NextResponse.json(updatedTemplate);
-  } catch (error: any) {
+    return NextResponse.json(template);
+  } catch (error) {
+    console.error('Update template error:', error);
     return NextResponse.json(
-      { message: error.message || 'Internal server error' },
+      { message: 'Internal server error' },
       { status: 500 }
     );
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -114,7 +101,8 @@ export async function DELETE(
     }
 
     return NextResponse.json({ message: 'Template deleted successfully' });
-  } catch (error: any) {
+  } catch (error) {
+    console.error('Delete template error:', error);
     return NextResponse.json(
       { message: error.message || 'Internal server error' },
       { status: 500 }
