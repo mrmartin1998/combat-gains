@@ -6,6 +6,10 @@ import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function GET(req, { params }) {
   try {
+    if (params.id === 'create' || params.id === 'new') {
+      return NextResponse.json({ message: 'Invalid workout ID' }, { status: 400 });
+    }
+
     await connectDB();
     const session = await getServerSession(authOptions);
     
