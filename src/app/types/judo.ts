@@ -1,13 +1,13 @@
 export interface Technique {
   name: string;
-  category: 'throws' | 'pins' | 'submissions' | 'combinations' | 'drills';
+  category: 'tachi-waza' | 'ne-waza' | 'ukemi' | 'other';
   notes?: string;
 }
 
 export interface PartnerWork {
   partnerName: string;
   duration: number;
-  type: 'drilling' | 'situational' | 'sparring';
+  type: 'uchikomi' | 'nagekomi' | 'drill' | 'situation';
   notes?: string;
 }
 
@@ -21,6 +21,7 @@ export interface JudoClass {
   _id?: string;
   date: string;
   duration: number;
+  type: string;
   techniques: Technique[];
   partnerWork: PartnerWork[];
   sparringSessions: SparringSession[];
