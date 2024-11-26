@@ -5,6 +5,8 @@ import Workout from '@/app/models/Workout';
 import JudoClass from '@/app/models/JudoClass';
 import { authOptions } from '@/app/lib/auth';import { startOfMonth } from 'date-fns';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await connectDB();
