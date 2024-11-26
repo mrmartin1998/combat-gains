@@ -86,14 +86,14 @@ export default function JudoClassDetail({ params }: { params: { id: string } }) 
             <h1 className="text-2xl font-bold">Class Details</h1>
           </div>
           <div className="flex-none gap-2">
-            <Link href={`/judo/${params.id}/edit`} className="btn btn-ghost">
+            <Link href={`/judo/${params.id}/edit`} className="btn btn-primary">
               Edit
             </Link>
             <button onClick={handleDelete} className="btn btn-error">
               Delete
             </button>
             <Link href="/judo" className="btn btn-ghost">
-              Back to Classes
+              Go back
             </Link>
           </div>
         </div>

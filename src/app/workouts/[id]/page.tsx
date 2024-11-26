@@ -46,6 +46,22 @@ export default function WorkoutDetail({ params }: { params: { id: string } }) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this workout?')) return;
+    
+    try {
+      const res = await fetch(`/api/workouts/${params.id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!res.ok) throw new Error('Failed to delete workout');
+      
+      router.push('/workouts');
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -88,9 +104,15 @@ export default function WorkoutDetail({ params }: { params: { id: string } }) {
           <div className="flex-1">
             <h1 className="text-2xl font-bold capitalize">{workout.type} Workout</h1>
           </div>
-          <div className="flex-none">
+          <div className="flex-none gap-2">
+            <Link href={`/workouts/${workout._id}/edit`} className="btn btn-primary">
+              Edit
+            </Link>
+            <button onClick={handleDelete} className="btn btn-error">
+              Delete
+            </button>
             <Link href="/workouts" className="btn btn-ghost">
-              Back to Workouts
+              Go back
             </Link>
           </div>
         </div>
