@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import JudoClass from '@/app/models/JudoClass';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';import { startOfMonth } from 'date-fns';
+import { authOptions } from '@/app/lib/auth';import { startOfMonth } from 'date-fns';
 
 export const dynamic = 'force-dynamic';
 
