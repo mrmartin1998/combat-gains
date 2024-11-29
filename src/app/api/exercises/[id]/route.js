@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Exercise from '@/app/models/Exercise';
+import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
 
-export async function GET(req, { params }) {
+// GET /api/exercises/[id]
+export async function GET(request, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const exercise = await Exercise.findOne({
@@ -25,91 +23,66 @@ export async function GET(req, { params }) {
     });
 
     if (!exercise) {
-      return NextResponse.json(
-        { message: 'Exercise not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Exercise not found' }, { status: 404 });
     }
 
     return NextResponse.json(exercise);
   } catch (error) {
     console.error('Exercise fetch error:', error);
-    return NextResponse.json(
-      { message: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function PUT(req, { params }) {
+// PUT /api/exercises/[id]
+export async function PUT(request, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const data = await req.json();
+    const data = await request.json();
     const exercise = await Exercise.findOneAndUpdate(
-      { 
-        _id: params.id,
-        createdBy: session.user.id // Only creator can update
-      },
+      { _id: params.id, createdBy: session.user.id },
       data,
       { new: true, runValidators: true }
     );
 
     if (!exercise) {
-      return NextResponse.json(
-        { message: 'Exercise not found or unauthorized' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Exercise not found' }, { status: 404 });
     }
 
     return NextResponse.json(exercise);
   } catch (error) {
-    console.error('Update exercise error:', error);
-    return NextResponse.json(
-      { message: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Exercise update error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function DELETE(req, { params }) {
+// DELETE /api/exercises/[id]
+export async function DELETE(request, { params }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const exercise = await Exercise.findOneAndDelete({
       _id: params.id,
-      createdBy: session.user.id // Only creator can delete
+      createdBy: session.user.id
     });
 
     if (!exercise) {
-      return NextResponse.json(
-        { message: 'Exercise not found or unauthorized' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Exercise not found' }, { status: 404 });
     }
 
     return NextResponse.json({ message: 'Exercise deleted successfully' });
   } catch (error) {
-    console.error('Delete exercise error:', error);
-    return NextResponse.json(
-      { message: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('Exercise delete error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 } 
