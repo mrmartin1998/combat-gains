@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 interface ExerciseForm {
   name: string;
@@ -70,11 +71,12 @@ export default function CreateExercise() {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="navbar bg-base-100 rounded-box shadow">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Create New Exercise</h1>
+            <h1 className="text-2xl font-bold">Create Exercise</h1>
           </div>
           <div className="flex-none">
-            <Link href="/exercises" className="btn btn-ghost">
-              Cancel
+            <Link href="/exercises" className="btn btn-ghost btn-sm">
+              <ArrowLeft className="h-4 w-4" />
+              Back
             </Link>
           </div>
         </div>
@@ -91,7 +93,7 @@ export default function CreateExercise() {
 
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
-              <h2 className="card-title">Exercise Details</h2>
+              <h2 className="card-title">Basic Information</h2>
               
               <div className="form-control">
                 <label className="label">
@@ -106,6 +108,23 @@ export default function CreateExercise() {
                 />
               </div>
 
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Description</span>
+                </label>
+                <textarea
+                  className="textarea textarea-bordered h-24"
+                  value={exercise.description}
+                  onChange={(e) => setExercise({...exercise, description: e.target.value})}
+                  placeholder="Brief description of the exercise..."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">Target Muscles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="form-control">
                   <label className="label">
@@ -154,7 +173,12 @@ export default function CreateExercise() {
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">Exercise Details</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="form-control">
                   <label className="label">
@@ -194,24 +218,25 @@ export default function CreateExercise() {
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Description</span>
-                </label>
-                <textarea
-                  className="textarea textarea-bordered"
-                  value={exercise.description}
-                  onChange={(e) => setExercise({...exercise, description: e.target.value})}
-                />
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <div className="flex justify-between items-center">
+                <h2 className="card-title">Instructions</h2>
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-sm"
+                  onClick={addInstruction}
+                >
+                  Add Step
+                </button>
               </div>
-
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Instructions</span>
-                </label>
+              
+              <div className="space-y-2">
                 {exercise.instructions.map((instruction, index) => (
-                  <div key={index} className="flex gap-2 mb-2">
+                  <div key={index} className="flex gap-2">
                     <input
                       type="text"
                       className="input input-bordered flex-1"
@@ -226,7 +251,7 @@ export default function CreateExercise() {
                     {index > 0 && (
                       <button
                         type="button"
-                        className="btn btn-square btn-ghost"
+                        className="btn btn-ghost btn-square"
                         onClick={() => {
                           const newInstructions = exercise.instructions.filter((_, i) => i !== index);
                           setExercise({...exercise, instructions: newInstructions});
@@ -239,15 +264,13 @@ export default function CreateExercise() {
                     )}
                   </div>
                 ))}
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-sm"
-                  onClick={addInstruction}
-                >
-                  Add Step
-                </button>
               </div>
+            </div>
+          </div>
 
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h2 className="card-title">Settings</h2>
               <div className="form-control">
                 <label className="label cursor-pointer">
                   <span className="label-text">Make this exercise public</span>

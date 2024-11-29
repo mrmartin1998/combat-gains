@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Plus, Search } from 'lucide-react';
 
 interface Exercise {
   _id: string;
@@ -20,6 +21,7 @@ export default function Exercises() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState({
+    search: '',
     muscle: '',
     equipment: ''
   });
@@ -46,6 +48,16 @@ export default function Exercises() {
     }
   };
 
+  const filteredExercises = exercises.filter(exercise => {
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      if (!exercise.name.toLowerCase().includes(searchTerm)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
   if (loading) {
     return (
       <div className="min-h-screen bg-base-200 p-4 flex items-center justify-center">
@@ -57,14 +69,31 @@ export default function Exercises() {
   return (
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Exercise Library</h1>
-          <Link href="/exercises/create" className="btn btn-primary">
-            Create Exercise
-          </Link>
+        <div className="navbar bg-base-100 rounded-box shadow">
+          <div className="flex-1">
+            <div className="form-control">
+              <div className="join">
+                <button className="btn join-item">
+                  <Search className="h-6 w-6" />
+                </button>
+                <input
+                  type="text"
+                  placeholder="Search exercises..."
+                  className="input input-bordered join-item w-full max-w-xs"
+                  value={filters.search}
+                  onChange={(e) => setFilters({...filters, search: e.target.value})}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex-none">
+            <Link href="/exercises/create" className="btn btn-primary">
+              <Plus className="w-6 h-6" />
+              New Exercise
+            </Link>
+          </div>
         </div>
 
-        {/* Filters */}
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <h2 className="card-title">Filters</h2>
@@ -102,9 +131,8 @@ export default function Exercises() {
           </div>
         </div>
 
-        {/* Exercise List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {exercises.map((exercise) => (
+          {filteredExercises.map((exercise) => (
             <Link 
               key={exercise._id}
               href={`/exercises/${exercise._id}`}
