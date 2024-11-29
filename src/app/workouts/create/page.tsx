@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ExerciseSelect from '@/app/components/ExerciseSelect';
+import ExerciseModal from '@/app/components/ExerciseModal';
+import ExerciseCard from '@/app/components/ExerciseCard';
 
 interface Exercise {
   name: string;
@@ -25,18 +27,17 @@ export default function CreateWorkout() {
     exercises: [] as Exercise[],
     notes: '',
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const addExercise = () => {
+  const handleExerciseSelect = (exercise: Exercise) => {
     setWorkout(prev => ({
       ...prev,
-      exercises: [...prev.exercises, { name: '', sets: [{ reps: 0, weight: 0 }], notes: '' }],
+      exercises: [...prev.exercises, {
+        name: exercise.name,
+        sets: [{ reps: 0, weight: 0 }]
+      }]
     }));
-  };
-
-  const addSet = (exerciseIndex: number) => {
-    const newExercises = [...workout.exercises];
-    newExercises[exerciseIndex].sets.push({ reps: 0, weight: 0 });
-    setWorkout({ ...workout, exercises: newExercises });
+    setIsModalOpen(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -142,110 +143,38 @@ export default function CreateWorkout() {
 
           <div className="divider">Exercises</div>
 
-          {workout.exercises.map((exercise, exerciseIndex) => (
-            <div key={exerciseIndex} className="card bg-base-100 shadow-xl">
-              <div className="card-body">
-                <div className="flex justify-between items-center">
-                  <ExerciseSelect
-                    value={exercise.name}
-                    onChange={(name) => {
-                      const newExercises = [...workout.exercises];
-                      newExercises[exerciseIndex].name = name;
-                      setWorkout({...workout, exercises: newExercises});
-                    }}
-                    className="w-full max-w-xs"
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-square btn-ghost"
-                    onClick={() => {
-                      const newExercises = workout.exercises.filter((_, idx) => idx !== exerciseIndex);
-                      setWorkout({...workout, exercises: newExercises});
-                    }}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="table table-zebra w-full">
-                    <thead>
-                      <tr>
-                        <th>Set</th>
-                        <th>Reps</th>
-                        <th>Weight (kg)</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {exercise.sets.map((set, setIndex) => (
-                        <tr key={setIndex}>
-                          <td>{setIndex + 1}</td>
-                          <td>
-                            <input
-                              type="number"
-                              className="input input-bordered input-sm w-20"
-                              value={set.reps}
-                              onChange={(e) => {
-                                const newExercises = [...workout.exercises];
-                                newExercises[exerciseIndex].sets[setIndex].reps = parseInt(e.target.value);
-                                setWorkout({...workout, exercises: newExercises});
-                              }}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="number"
-                              className="input input-bordered input-sm w-20"
-                              value={set.weight}
-                              onChange={(e) => {
-                                const newExercises = [...workout.exercises];
-                                newExercises[exerciseIndex].sets[setIndex].weight = parseInt(e.target.value);
-                                setWorkout({...workout, exercises: newExercises});
-                              }}
-                            />
-                          </td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-ghost btn-sm"
-                              onClick={() => {
-                                const newExercises = [...workout.exercises];
-                                newExercises[exerciseIndex].sets = exercise.sets.filter((_, idx) => idx !== setIndex);
-                                setWorkout({...workout, exercises: newExercises});
-                              }}
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                              </svg>
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-sm w-full mt-2"
-                  onClick={() => addSet(exerciseIndex)}
-                >
-                  Add Set
-                </button>
-              </div>
-            </div>
+          {workout.exercises.map((exercise, index) => (
+            <ExerciseCard
+              key={index}
+              exercise={exercise}
+              exerciseIndex={index}
+              onUpdate={(idx, updatedExercise) => {
+                const newExercises = [...workout.exercises];
+                newExercises[idx] = updatedExercise;
+                setWorkout({ ...workout, exercises: newExercises });
+              }}
+              onDelete={(idx) => {
+                setWorkout({
+                  ...workout,
+                  exercises: workout.exercises.filter((_, i) => i !== idx)
+                });
+              }}
+            />
           ))}
 
           <button
             type="button"
             className="btn btn-primary w-full"
-            onClick={addExercise}
+            onClick={() => setIsModalOpen(true)}
           >
             Add Exercise
           </button>
+
+          <ExerciseModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onSelect={handleExerciseSelect}
+          />
 
           <div className="card bg-base-100 shadow-xl">
             <div className="card-body">
