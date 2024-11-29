@@ -28,6 +28,8 @@ export const config = {
     '/dashboard/:path*',
     '/profile/:path*',
     '/workouts/:path*',
+    '/exercises/:path*',
+    '/api/:path*',
     '/login',
     '/register'
   ]

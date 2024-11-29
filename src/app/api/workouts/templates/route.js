@@ -4,6 +4,8 @@ import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import { authOptions } from '@/app/api/auth/config';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     await connectDB();
