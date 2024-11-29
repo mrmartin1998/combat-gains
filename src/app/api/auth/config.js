@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import connectDB from '@/app/lib/db/mongoose';
 import User from '@/app/models/User';
 
+export const dynamic = 'force-dynamic';
+
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -68,5 +70,6 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-  trustHost: true
+  trustHost: true,
+  debug: process.env.NODE_ENV === 'development'
 }; 
