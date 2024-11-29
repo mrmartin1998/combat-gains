@@ -29,12 +29,16 @@ export default function CreateWorkout() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleExerciseSelect = (exercise: Exercise) => {
+  const handleExerciseSelect = async (exercise: Exercise) => {
+    const res = await fetch(`/api/workouts/last-set?exerciseName=${encodeURIComponent(exercise.name)}`);
+    const previousData = await res.json();
+
     setWorkout(prev => ({
       ...prev,
       exercises: [...prev.exercises, {
         name: exercise.name,
-        sets: [{ reps: 0, weight: 0 }]
+        sets: [{ reps: 0, weight: 0 }],
+        previousData: previousData || null
       }]
     }));
     setIsModalOpen(false);

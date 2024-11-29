@@ -8,10 +8,17 @@ interface Set {
   notes?: string;
 }
 
+interface PreviousSet {
+  reps: number;
+  weight: number;
+  date: string;
+}
+
 interface Exercise {
   name: string;
   sets: Set[];
   notes?: string;
+  previousData?: PreviousSet | null;
 }
 
 interface Props {
@@ -21,6 +28,7 @@ interface Props {
   onDelete: (index: number) => void;
   onDuplicate?: (index: number) => void;
   showLastWorkout?: boolean;
+  previousData?: PreviousSet | null;
 }
 
 export default function ExerciseCard({ 
@@ -29,7 +37,8 @@ export default function ExerciseCard({
   onUpdate, 
   onDelete,
   onDuplicate,
-  showLastWorkout = false 
+  showLastWorkout = false,
+  previousData = null
 }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -108,7 +117,10 @@ export default function ExerciseCard({
                     <tr key={idx}>
                       <td>{idx + 1}</td>
                       <td className="text-sm opacity-70">
-                        8 × 60kg
+                        {exercise.previousData ? 
+                          `${exercise.previousData.reps} × ${exercise.previousData.weight}kg` : 
+                          '-'
+                        }
                       </td>
                       <td>
                         <input
