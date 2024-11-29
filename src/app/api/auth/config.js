@@ -47,9 +47,11 @@ export const authOptions = {
   ],
   pages: {
     signIn: '/login',
+    error: '/login'
   },
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -66,4 +68,5 @@ export const authOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true
 }; 
