@@ -7,13 +7,22 @@ import ExerciseModal from '@/app/components/ExerciseModal';
 import ExerciseCard from '@/app/components/ExerciseCard';
 
 interface Exercise {
+  _id?: string;
   name: string;
-  sets: {
+  sets?: {
     reps: number;
     weight: number;
     notes?: string;
   }[];
   notes?: string;
+  primaryMuscles?: string[];
+  secondaryMuscles?: string[];
+  equipment?: string;
+  type?: string;
+  isPublic?: boolean;
+  description?: string;
+  instructions?: string[];
+  createdBy?: string;
 }
 
 export default function CreateWorkout() {
