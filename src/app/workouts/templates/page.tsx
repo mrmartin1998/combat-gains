@@ -2,25 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-interface Exercise {
-  name: string;
-  sets: {
-    reps: number;
-    weight: number;
-    notes?: string;
-  }[];
-  notes?: string;
-}
-
-interface Template {
-  _id: string;
-  type: string;
-  templateName: string;
-  exercises: Exercise[];
-  duration: number;
-  notes?: string;
-}
+import { Exercise, Template } from '@/app/types/workout';
 
 export default function WorkoutTemplates() {
   const router = useRouter();

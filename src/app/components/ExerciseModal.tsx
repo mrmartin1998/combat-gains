@@ -1,13 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-
-interface Exercise {
-  _id: string;
-  name: string;
-  primaryMuscles: string[];
-  equipment: string;
-}
+import { Exercise } from '@/app/types/exercise';
 
 interface Props {
   isOpen: boolean;
@@ -112,7 +106,7 @@ export default function ExerciseModal({ isOpen, onClose, onSelect }: Props) {
                 <div className="card-body p-4">
                   <h3 className="card-title text-base">{exercise.name}</h3>
                   <div className="flex flex-wrap gap-1">
-                    {exercise.primaryMuscles.map((muscle) => (
+                    {exercise.primaryMuscles?.map((muscle) => (
                       <span key={muscle} className="badge badge-sm">{muscle}</span>
                     ))}
                     <span className="badge badge-sm">{exercise.equipment}</span>

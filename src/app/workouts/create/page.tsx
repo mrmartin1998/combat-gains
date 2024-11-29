@@ -5,25 +5,7 @@ import Link from 'next/link';
 import ExerciseSelect from '@/app/components/ExerciseSelect';
 import ExerciseModal from '@/app/components/ExerciseModal';
 import ExerciseCard from '@/app/components/ExerciseCard';
-
-interface Exercise {
-  _id?: string;
-  name: string;
-  sets?: {
-    reps: number;
-    weight: number;
-    notes?: string;
-  }[];
-  notes?: string;
-  primaryMuscles?: string[];
-  secondaryMuscles?: string[];
-  equipment?: string;
-  type?: string;
-  isPublic?: boolean;
-  description?: string;
-  instructions?: string[];
-  createdBy?: string;
-}
+import { Exercise, Workout } from '@/app/types/workout';
 
 export default function CreateWorkout() {
   const router = useRouter();
@@ -38,14 +20,14 @@ export default function CreateWorkout() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleExerciseSelect = async (exercise: Exercise) => {
-    const res = await fetch(`/api/workouts/last-set?exerciseName=${encodeURIComponent(exercise.name)}`);
+  const handleExerciseSelect = async (selectedExercise: Exercise) => {
+    const res = await fetch(`/api/workouts/last-set?exerciseName=${encodeURIComponent(selectedExercise.name)}`);
     const previousData = await res.json();
 
     setWorkout(prev => ({
       ...prev,
       exercises: [...prev.exercises, {
-        name: exercise.name,
+        ...selectedExercise,
         sets: [{ reps: 0, weight: 0 }],
         previousData: previousData || null
       }]

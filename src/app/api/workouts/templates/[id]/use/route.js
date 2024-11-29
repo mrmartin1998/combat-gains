@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/app/api/auth/config';
 
 export async function POST(req, { params }) {
   try {
@@ -32,16 +32,16 @@ export async function POST(req, { params }) {
     const workout = await Workout.create({
       userId: session.user.id,
       type: template.type,
+      date: new Date(),
       duration: template.duration,
       exercises: template.exercises,
       notes: template.notes,
-      template: false,
-      date: new Date()
+      template: false
     });
 
     return NextResponse.json(workout);
   } catch (error) {
-    console.error('Create from template error:', error);
+    console.error('Template use error:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }

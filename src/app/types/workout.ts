@@ -1,33 +1,21 @@
-export interface Set {
-  reps: number;
-  weight: number;
-  notes?: string;
-}
+import type { Exercise } from './exercise';
 
-export interface Exercise {
-  name: string;
-  sets: Set[];
-  notes?: string;
-}
+export type { Exercise };
 
-export interface BaseWorkout {
+export interface Workout {
+  _id?: string;
   type: string;
+  date: string;
   duration: number;
   exercises: Exercise[];
   notes?: string;
-}
-
-export interface Workout extends BaseWorkout {
-  _id: string;
-  userId: string;
-  date: string;
-  template: boolean;
+  template?: boolean;
   templateName?: string;
-  createdAt: string;
+  userId?: string;
+  createdAt?: string;
 }
 
-export interface Template extends BaseWorkout {
-  _id: string;
-  userId: string;
+export interface Template extends Workout {
   templateName: string;
+  template: true;
 } 

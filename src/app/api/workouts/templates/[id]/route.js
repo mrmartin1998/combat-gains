@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/api/auth/config';
 
 export async function GET(req, { params }) {
   try {

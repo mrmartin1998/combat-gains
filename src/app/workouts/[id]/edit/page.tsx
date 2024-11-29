@@ -3,25 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ExerciseSelect from '@/app/components/ExerciseSelect';
-
-interface Exercise {
-  name: string;
-  sets: {
-    reps: number;
-    weight: number;
-    notes?: string;
-  }[];
-  notes?: string;
-}
-
-interface Workout {
-  _id: string;
-  type: string;
-  date: string;
-  duration: number;
-  exercises: Exercise[];
-  notes?: string;
-}
+import { Exercise, Workout } from '@/app/types/workout';
 
 export default function EditWorkout({ params }: { params: { id: string } }) {
   const router = useRouter();

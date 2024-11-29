@@ -1,27 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-
-interface Exercise {
-  name: string;
-  sets: {
-    reps: number;
-    weight: number;
-    notes?: string;
-  }[];
-  notes?: string;
-}
-
-interface Workout {
-  _id: string;
-  type: string;
-  date: string;
-  duration: number;
-  exercises: Exercise[];
-  notes?: string;
-  template: boolean;
-  templateName: string;
-}
+import { Exercise, Workout } from '@/app/types/workout';
 
 export default function WorkoutsList() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
