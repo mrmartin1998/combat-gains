@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ExerciseSelect from '@/app/components/ExerciseSelect';
 
 interface Exercise {
   name: string;
@@ -81,6 +82,15 @@ export default function EditTemplate({ params }: { params: { id: string } }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const updateExerciseName = (exerciseIndex: number, name: string) => {
+    const newExercises = [...template.exercises];
+    newExercises[exerciseIndex] = {
+      ...newExercises[exerciseIndex],
+      name
+    };
+    setTemplate({ ...template, exercises: newExercises });
   };
 
   if (loading) {
@@ -182,16 +192,10 @@ export default function EditTemplate({ params }: { params: { id: string } }) {
             <div key={exerciseIndex} className="card bg-base-100 shadow-xl">
               <div className="card-body">
                 <div className="flex justify-between items-center">
-                  <input
-                    type="text"
-                    placeholder="Exercise name"
-                    className="input input-bordered w-full max-w-xs"
+                  <ExerciseSelect
                     value={exercise.name}
-                    onChange={(e) => {
-                      const newExercises = [...template.exercises];
-                      newExercises[exerciseIndex].name = e.target.value;
-                      setTemplate({...template, exercises: newExercises});
-                    }}
+                    onChange={(name) => updateExerciseName(exerciseIndex, name)}
+                    className="w-full max-w-xs"
                   />
                   <button
                     type="button"

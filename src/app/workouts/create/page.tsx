@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ExerciseSelect from '@/app/components/ExerciseSelect';
 
 interface Exercise {
   name: string;
@@ -23,8 +24,6 @@ export default function CreateWorkout() {
     duration: 60,
     exercises: [] as Exercise[],
     notes: '',
-    template: false,
-    templateName: '',
   });
 
   const addExercise = () => {
@@ -147,16 +146,14 @@ export default function CreateWorkout() {
             <div key={exerciseIndex} className="card bg-base-100 shadow-xl">
               <div className="card-body">
                 <div className="flex justify-between items-center">
-                  <input
-                    type="text"
-                    placeholder="Exercise name"
-                    className="input input-bordered w-full max-w-xs"
+                  <ExerciseSelect
                     value={exercise.name}
-                    onChange={(e) => {
+                    onChange={(name) => {
                       const newExercises = [...workout.exercises];
-                      newExercises[exerciseIndex].name = e.target.value;
+                      newExercises[exerciseIndex].name = name;
                       setWorkout({...workout, exercises: newExercises});
                     }}
+                    className="w-full max-w-xs"
                   />
                   <button
                     type="button"
@@ -265,33 +262,6 @@ export default function CreateWorkout() {
                   onChange={(e) => setWorkout({...workout, notes: e.target.value})}
                 />
               </div>
-
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Save as template</span>
-                  <input
-                    type="checkbox"
-                    className="toggle toggle-primary"
-                    checked={workout.template}
-                    onChange={(e) => setWorkout({...workout, template: e.target.checked})}
-                  />
-                </label>
-              </div>
-
-              {workout.template && (
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Template Name</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="input input-bordered"
-                    placeholder="Enter template name"
-                    value={workout.templateName}
-                    onChange={(e) => setWorkout({...workout, templateName: e.target.value})}
-                  />
-                </div>
-              )}
             </div>
           </div>
 

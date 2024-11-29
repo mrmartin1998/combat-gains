@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ExerciseSelect from '@/app/components/ExerciseSelect';
 
 interface Exercise {
   name: string;
@@ -101,6 +102,15 @@ export default function EditWorkout({ params }: { params: { id: string } }) {
     }
   };
 
+  const updateExerciseName = (exerciseIndex: number, name: string) => {
+    const newExercises = [...workout.exercises];
+    newExercises[exerciseIndex] = {
+      ...newExercises[exerciseIndex],
+      name
+    };
+    setWorkout({ ...workout, exercises: newExercises });
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="alert alert-error">{error}</div>;
   if (!workout) return <div>Workout not found</div>;
@@ -184,12 +194,10 @@ export default function EditWorkout({ params }: { params: { id: string } }) {
             {workout.exercises.map((exercise, exerciseIndex) => (
               <div key={exerciseIndex} className="card bg-base-100 shadow-xl">
                 <div className="card-body">
-                  <input
-                    type="text"
-                    placeholder="Exercise name"
-                    className="input input-bordered w-full"
+                  <ExerciseSelect
                     value={exercise.name}
-                    onChange={(e) => updateExercise(exerciseIndex, 'name', e.target.value)}
+                    onChange={(name) => updateExerciseName(exerciseIndex, name)}
+                    className="w-full"
                   />
 
                   <div className="overflow-x-auto">
