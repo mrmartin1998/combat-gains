@@ -4,6 +4,8 @@ import Exercise from '@/app/models/Exercise';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/config';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/exercises/[id]
 export async function GET(request, { params }) {
   try {
