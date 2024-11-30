@@ -31,19 +31,16 @@ function LoginContent() {
 
     try {
       const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      console.log('Attempting sign in with callback:', callbackUrl);
-      
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
-        redirect: false
+        redirect: false,
+        callbackUrl: callbackUrl
       });
-      
-      console.log('Sign in result:', result);
 
       if (!result?.error) {
         toast.success('Successfully logged in!');
-        router.push('/dashboard');
+        router.push(callbackUrl);
       } else {
         toast.error(result.error || 'Failed to login');
       }

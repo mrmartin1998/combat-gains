@@ -7,8 +7,11 @@ export async function middleware(request) {
     secret: process.env.NEXTAUTH_SECRET 
   });
   
+  console.log('Middleware path:', request.nextUrl.pathname);
+  console.log('Token exists:', !!token);
+
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
-                     request.nextUrl.pathname.startsWith('/register');
+                    request.nextUrl.pathname.startsWith('/register');
 
   if (isAuthPage) {
     if (token) {
@@ -18,7 +21,9 @@ export async function middleware(request) {
   }
 
   if (!token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
