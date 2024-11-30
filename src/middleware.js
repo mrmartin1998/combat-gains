@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request });
+export async function middleware(request) {
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET 
+  });
+  
   const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
                      request.nextUrl.pathname.startsWith('/register');
 
@@ -15,9 +18,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('callbackUrl', request.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
@@ -29,7 +30,6 @@ export const config = {
     '/profile/:path*',
     '/workouts/:path*',
     '/exercises/:path*',
-    '/api/:path*',
     '/login',
     '/register'
   ]

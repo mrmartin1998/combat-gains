@@ -1,34 +1,43 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Trash2 } from 'lucide-react';
 
-interface ExerciseForm {
-  name: string;
-  primaryMuscles: string[];
-  secondaryMuscles: string[];
-  equipment: string;
-  type: string;
-  isPublic: boolean;
-  description: string;
-  instructions: string[];
-}
-
-export default function CreateExercise() {
+export default function EditExercise({ params }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
-  const [exercise, setExercise] = useState<ExerciseForm>({
+  const [exercise, setExercise] = useState({
     name: '',
     primaryMuscles: [],
     secondaryMuscles: [],
-    equipment: 'barbell',
-    type: 'strength',
+    equipment: '',
+    type: '',
     isPublic: true,
     description: '',
     instructions: ['']
   });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  useEffect(() => {
+    const fetchExercise = async () => {
+      try {
+        const response = await fetch(`/api/exercises/${params.id}`);
+        if (!response.ok) throw new Error('Failed to fetch exercise');
+        const data = await response.json();
+        setExercise(data);
+      } catch (err) {
+        setError('Failed to load exercise');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExercise();
+  }, [params.id]);
 
   const addInstruction = () => {
     setExercise(prev => ({
@@ -37,24 +46,54 @@ export default function CreateExercise() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const updateInstruction = (index, value) => {
+    const newInstructions = [...exercise.instructions];
+    newInstructions[index] = value;
+    setExercise({ ...exercise, instructions: newInstructions });
+  };
+
+  const removeInstruction = (index) => {
+    const newInstructions = exercise.instructions.filter((_, idx) => idx !== index);
+    setExercise({ ...exercise, instructions: newInstructions });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     setError('');
 
     try {
-      const res = await fetch('/api/exercises', {
-        method: 'POST',
+      const res = await fetch(`/api/exercises/${params.id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(exercise),
       });
 
-      if (!res.ok) throw new Error('Failed to create exercise');
+      if (!res.ok) throw new Error('Failed to update exercise');
       router.push('/exercises');
-    } catch (err: any) {
+    } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setSaving(true);
+    setError('');
+
+    try {
+      const res = await fetch(`/api/exercises/${params.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Failed to delete exercise');
+      router.push('/exercises');
+    } catch (err) {
+      setError(err.message);
+      setShowDeleteModal(false);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -71,9 +110,17 @@ export default function CreateExercise() {
       <div className="max-w-4xl mx-auto space-y-6">
         <div className="navbar bg-base-100 rounded-box shadow">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Create Exercise</h1>
+            <h1 className="text-2xl font-bold">Edit Exercise</h1>
           </div>
-          <div className="flex-none">
+          <div className="flex-none gap-2">
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="btn btn-error btn-sm"
+              disabled={saving}
+            >
+              <Trash2 className="h-4 w-4" />
+              Delete
+            </button>
             <Link href="/exercises" className="btn btn-ghost btn-sm">
               <ArrowLeft className="h-4 w-4" />
               Back
@@ -227,69 +274,69 @@ export default function CreateExercise() {
                 <h2 className="card-title">Instructions</h2>
                 <button
                   type="button"
-                  className="btn btn-ghost btn-sm"
+                  className="btn btn-primary btn-sm"
                   onClick={addInstruction}
                 >
                   Add Step
                 </button>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {exercise.instructions.map((instruction, index) => (
                   <div key={index} className="flex gap-2">
-                    <input
-                      type="text"
-                      className="input input-bordered flex-1"
-                      value={instruction}
-                      onChange={(e) => {
-                        const newInstructions = [...exercise.instructions];
-                        newInstructions[index] = e.target.value;
-                        setExercise({...exercise, instructions: newInstructions});
-                      }}
-                      placeholder={`Step ${index + 1}`}
-                    />
-                    {index > 0 && (
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-square"
-                        onClick={() => {
-                          const newInstructions = exercise.instructions.filter((_, i) => i !== index);
-                          setExercise({...exercise, instructions: newInstructions});
-                        }}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    )}
+                    <div className="form-control flex-1">
+                      <div className="input-group">
+                        <span>{index + 1}</span>
+                        <input
+                          type="text"
+                          className="input input-bordered w-full"
+                          value={instruction}
+                          onChange={(e) => updateInstruction(index, e.target.value)}
+                          placeholder="Enter instruction step..."
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="btn btn-square"
+                          onClick={() => removeInstruction(index)}
+                          disabled={exercise.instructions.length === 1}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title">Settings</h2>
-              <div className="form-control">
-                <label className="label cursor-pointer">
-                  <span className="label-text">Make this exercise public</span>
-                  <input
-                    type="checkbox"
-                    className="toggle"
-                    checked={exercise.isPublic}
-                    onChange={(e) => setExercise({...exercise, isPublic: e.target.checked})}
-                  />
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full">
-            Create Exercise
+          <button type="submit" className="btn btn-primary w-full" disabled={saving}>
+            {saving ? 'Saving...' : 'Save Changes'}
           </button>
         </form>
       </div>
+
+      {/* Delete Modal */}
+      <dialog className={`modal ${showDeleteModal ? 'modal-open' : ''}`}>
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Delete Exercise</h3>
+          <p className="py-4">Are you sure you want to delete this exercise? This action cannot be undone.</p>
+          <div className="modal-action">
+            <button className="btn" onClick={() => setShowDeleteModal(false)} disabled={saving}>
+              Cancel
+            </button>
+            <button className="btn btn-error" onClick={handleDelete} disabled={saving}>
+              {saving ? 'Deleting...' : 'Delete'}
+            </button>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={() => setShowDeleteModal(false)}>close</button>
+        </form>
+      </dialog>
     </div>
   );
 } 

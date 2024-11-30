@@ -1,12 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { JudoClass } from '@/app/types/judo';
 
 export default function JudoClasses() {
-  const [classes, setClasses] = useState<JudoClass[]>([]);
+  const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchClasses = async () => {

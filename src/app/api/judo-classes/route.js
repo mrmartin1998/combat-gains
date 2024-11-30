@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import JudoClass from '@/app/models/JudoClass';
-import { authOptions } from '@/app/api/auth/config';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
   try {
     const session = await getServerSession(authOptions);

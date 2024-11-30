@@ -7,7 +7,7 @@ export default function NavBar() {
   const { data: session, status } = useSession();
   const pathname = usePathname();
 
-  const isActive = (path: string) => {
+  const isActive = (path) => {
     return pathname.startsWith(path) ? 'active' : '';
   };
 
