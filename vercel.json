@@ -3,5 +3,9 @@
     "devCommand": "next dev",
     "installCommand": "npm install",
     "framework": "nextjs",
-    "outputDirectory": ".next"
+    "outputDirectory": ".next",
+    "regions": ["iad1"],
+    "env": {
+        "NODE_ENV": "production"
+    }
 }
