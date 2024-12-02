@@ -1,21 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
   try {
-    if (params.id === 'create' || params.id === 'new') {
-      return NextResponse.json({ message: 'Invalid workout ID' }, { status: 400 });
-    }
-
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -24,7 +19,7 @@ export async function GET(req, { params }) {
 
     const workout = await Workout.findOne({
       _id: params.id,
-      userId: session.user.id
+      userId: user.userId
     });
 
     if (!workout) {
@@ -47,9 +42,9 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -58,7 +53,7 @@ export async function PUT(req, { params }) {
 
     const data = await req.json();
     const workout = await Workout.findOneAndUpdate(
-      { _id: params.id, userId: session.user.id },
+      { _id: params.id, userId: user.userId },
       data,
       { new: true, runValidators: true }
     );
@@ -83,9 +78,9 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -94,7 +89,7 @@ export async function DELETE(req, { params }) {
 
     const workout = await Workout.findOneAndDelete({
       _id: params.id,
-      userId: session.user.id
+      userId: user.userId
     });
 
     if (!workout) {

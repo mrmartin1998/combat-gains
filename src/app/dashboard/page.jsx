@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession } from '../providers';
 import Link from 'next/link';
 import { Plus, Calendar, Dumbbell, Trophy, History } from 'lucide-react';
 import toast from 'react-hot-toast';

@@ -20,9 +20,6 @@ const nextConfig = {
         destination: '/api/:path*',
       },
     ];
-  },
-  experimental: {
-    serverActions: true,
   }
 };
 

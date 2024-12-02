@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized or missing user ID' },
         { status: 401 }
@@ -22,7 +21,7 @@ export async function POST(req) {
     
     const workout = await Workout.create({
       ...workoutData,
-      userId: session.user.id,
+      userId: user.userId,
     });
 
     return NextResponse.json(workout, { status: 201 });
@@ -35,19 +34,19 @@ export async function POST(req) {
   }
 }
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    const workouts = await Workout.find({ userId: session.user.id })
+    const workouts = await Workout.find({ userId: user.userId })
       .sort({ date: -1 });
 
     return NextResponse.json(workouts);

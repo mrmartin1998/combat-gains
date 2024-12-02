@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Exercise from '@/app/models/Exercise';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -21,7 +20,7 @@ export async function POST(req) {
     const exerciseData = await req.json();
     const exercise = await Exercise.create({
       ...exerciseData,
-      createdBy: session.user.id,
+      createdBy: user.userId,
     });
 
     return NextResponse.json(exercise, { status: 201 });
@@ -37,10 +36,10 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     const { searchParams } = new URL(req.url);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -51,7 +50,7 @@ export async function GET(req) {
     const query = {
       $or: [
         { isPublic: true },
-        { createdBy: session.user.id }
+        { createdBy: user.userId }
       ]
     };
 

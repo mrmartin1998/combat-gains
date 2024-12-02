@@ -1,7 +1,7 @@
 import { Toaster } from 'react-hot-toast';
 import localFont from "next/font/local";
 import NavBar from './components/NavBar';
-import Providers from './providers';
+import { AuthProvider } from './providers';
 import "./globals.css";
 
 const geistSans = localFont({
@@ -26,11 +26,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
+        <AuthProvider>
           <NavBar />
           {children}
           <Toaster />
-        </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

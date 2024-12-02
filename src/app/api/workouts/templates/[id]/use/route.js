@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -20,7 +19,7 @@ export async function POST(req, { params }) {
 
     const template = await Workout.findOne({
       _id: params.id,
-      userId: session.user.id,
+      userId: user.userId,
       template: true
     });
 
@@ -32,7 +31,7 @@ export async function POST(req, { params }) {
     }
 
     const workout = await Workout.create({
-      userId: session.user.id,
+      userId: user.userId,
       type: template.type,
       date: new Date(),
       duration: template.duration,

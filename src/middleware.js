@@ -1,31 +1,23 @@
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { AUTH_COOKIE_NAME } from './app/config';
 
-export async function middleware(request) {
-  const token = await getToken({ 
-    req: request,
-    secret: process.env.NEXTAUTH_SECRET 
-  });
-  
+export function middleware(request) {
+  const token = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   console.log('Middleware path:', request.nextUrl.pathname);
   console.log('Token exists:', !!token);
 
-  const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
-                    request.nextUrl.pathname.startsWith('/register');
+  // Public paths that don't require authentication
+  const publicPaths = ['/', '/login', '/register', '/about'];
+  const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
-  if (isAuthPage) {
-    if (token) {
-      const searchParams = new URLSearchParams(request.nextUrl.search);
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      return NextResponse.redirect(new URL(callbackUrl, request.url));
-    }
-    return NextResponse.next();
+  // If no token and trying to access protected route
+  if (!token && !isPublicPath) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (!token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
+  // If token exists and trying to access login/register
+  if (token && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register')) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   return NextResponse.next();
@@ -33,14 +25,6 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    '/dashboard/:path*',
-    '/profile/:path*',
-    '/workouts/:path*',
-    '/exercises/:path*',
-    '/api/dashboard/:path*',
-    '/api/workouts/:path*',
-    '/api/judo-classes/:path*',
-    '/login',
-    '/register'
-  ]
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
 }; 

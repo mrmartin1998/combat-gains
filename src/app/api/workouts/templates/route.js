@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(req) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -19,7 +18,7 @@ export async function GET() {
     }
 
     const templates = await Workout.find({ 
-      userId: session.user.id,
+      userId: user.userId,
       template: true 
     }).sort({ templateName: 1 });
 
@@ -36,9 +35,9 @@ export async function GET() {
 export async function DELETE(req, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(req);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Unauthorized' },
         { status: 401 }
@@ -47,7 +46,7 @@ export async function DELETE(req, { params }) {
 
     const template = await Workout.findOneAndDelete({
       _id: params.id,
-      userId: session.user.id,
+      userId: user.userId,
       template: true
     });
 

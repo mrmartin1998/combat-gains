@@ -1,25 +1,23 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/app/lib/db/mongoose';
 import Workout from '@/app/models/Workout';
 import JudoClass from '@/app/models/JudoClass';
-import { authOptions } from '../auth/[...nextauth]/route';
 import { startOfMonth } from 'date-fns';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
-  try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
-      console.log('No session or user ID found:', session);
-      return NextResponse.json(
-        { message: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+export async function GET(request) {
+  const user = await verifyAuth(request);
+  
+  if (!user) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    );
+  }
 
+  try {
     await connectDB();
     const startOfCurrentMonth = startOfMonth(new Date());
 
@@ -27,7 +25,7 @@ export async function GET() {
     let workouts = [];
     try {
       workouts = await Workout.find({ 
-        userId: session.user.id 
+        userId: user.userId 
       }).sort({ date: -1 });
       console.log('Workouts fetched:', workouts.length);
     } catch (error) {
@@ -39,7 +37,7 @@ export async function GET() {
     let judoClasses = [];
     try {
       judoClasses = await JudoClass.find({ 
-        userId: session.user.id 
+        userId: user.userId 
       }).sort({ date: -1 });
       console.log('Judo classes fetched:', judoClasses.length);
     } catch (error) {

@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/app/lib/db/mongoose';
 import Exercise from '@/app/models/Exercise';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { verifyAuth } from '@/app/lib/utils/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,9 +9,9 @@ export const dynamic = 'force-dynamic';
 export async function GET(request, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(request);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -20,7 +19,7 @@ export async function GET(request, { params }) {
       _id: params.id,
       $or: [
         { isPublic: true },
-        { createdBy: session.user.id }
+        { createdBy: user.userId }
       ]
     });
 
@@ -39,15 +38,15 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(request);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const data = await request.json();
     const exercise = await Exercise.findOneAndUpdate(
-      { _id: params.id, createdBy: session.user.id },
+      { _id: params.id, createdBy: user.userId },
       data,
       { new: true, runValidators: true }
     );
@@ -67,15 +66,15 @@ export async function PUT(request, { params }) {
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    const user = await verifyAuth(request);
     
-    if (!session?.user?.id) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const exercise = await Exercise.findOneAndDelete({
       _id: params.id,
-      createdBy: session.user.id
+      createdBy: user.userId
     });
 
     if (!exercise) {

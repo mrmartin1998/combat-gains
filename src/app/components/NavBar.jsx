@@ -1,14 +1,25 @@
 'use client';
-import { useSession, signOut } from 'next-auth/react';
+
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useSession } from '../providers';
+import { signOut } from '../lib/utils/client-auth';
 
 export default function NavBar() {
   const { data: session, status } = useSession();
-  const pathname = usePathname();
 
   const isActive = (path) => {
-    return pathname.startsWith(path) ? 'active' : '';
+    if (typeof window !== 'undefined') {
+      return window.location.pathname === path ? 'active' : '';
+    }
+    return '';
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
   };
 
   return (
@@ -52,7 +63,7 @@ export default function NavBar() {
             </label>
             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
               <li><Link href="/profile">Profile</Link></li>
-              <li><button onClick={() => signOut()}>Sign Out</button></li>
+              <li><button onClick={handleSignOut}>Sign Out</button></li>
             </ul>
           </div>
         ) : (

@@ -1,14 +1,11 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { Suspense } from 'react';
 
 export default function LoginPage() {
-  const router = useRouter();
-  
   return (
     <Suspense fallback={<div className="loading loading-spinner loading-lg"></div>}>
       <LoginContent />
@@ -18,7 +15,6 @@ export default function LoginPage() {
 
 function LoginContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -30,23 +26,30 @@ function LoginContent() {
     setLoading(true);
 
     try {
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-        callbackUrl
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include',
       });
 
-      if (!result?.error) {
-        toast.success('Successfully logged in!');
-        router.push(callbackUrl);
-      } else {
-        toast.error(result.error || 'Failed to login');
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Login failed');
       }
+
+      // Store token in localStorage
+      localStorage.setItem('token', data.token);
+      toast.success('Successfully logged in!');
+      
+      // Force a hard redirect to dashboard
+      window.location.href = '/dashboard';
     } catch (error) {
       console.error('Login error:', error);
-      toast.error('An error occurred. Please try again.');
+      toast.error(error.message || 'Failed to login');
     } finally {
       setLoading(false);
     }
