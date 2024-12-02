@@ -35,7 +35,7 @@ function LoginContent() {
         email: formData.email,
         password: formData.password,
         redirect: false,
-        callbackUrl: callbackUrl
+        callbackUrl
       });
 
       if (!result?.error) {

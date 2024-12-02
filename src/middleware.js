@@ -15,7 +15,9 @@ export async function middleware(request) {
 
   if (isAuthPage) {
     if (token) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+      const searchParams = new URLSearchParams(request.nextUrl.search);
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+      return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
     return NextResponse.next();
   }
