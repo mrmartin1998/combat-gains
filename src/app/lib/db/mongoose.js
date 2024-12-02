@@ -23,13 +23,18 @@ async function connectDB() {
       maxPoolSize: 10,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts);
+    cached.promise = mongoose.connect(MONGODB_URI, opts).catch(err => {
+      console.error('MongoDB connection error:', err);
+      throw err;
+    });
   }
 
   try {
     cached.conn = await cached.promise;
+    console.log('MongoDB connected successfully');
   } catch (e) {
     cached.promise = null;
+    console.error('MongoDB connection failed:', e);
     throw e;
   }
 
