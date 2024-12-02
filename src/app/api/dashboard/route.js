@@ -29,6 +29,7 @@ export async function GET() {
       workouts = await Workout.find({ 
         userId: session.user.id 
       }).sort({ date: -1 });
+      console.log('Workouts fetched:', workouts.length);
     } catch (error) {
       console.error('Error fetching workouts:', error);
       workouts = [];
@@ -40,6 +41,7 @@ export async function GET() {
       judoClasses = await JudoClass.find({ 
         userId: session.user.id 
       }).sort({ date: -1 });
+      console.log('Judo classes fetched:', judoClasses.length);
     } catch (error) {
       console.error('Error fetching judo classes:', error);
       judoClasses = [];
