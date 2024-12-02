@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Plus, Calendar, Dumbbell, Trophy, History } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function Dashboard() {
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState({
@@ -23,12 +25,20 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    fetchDashboardData();
-  }, []);
+    if (status === 'authenticated') {
+      fetchDashboardData();
+    }
+  }, [status]);
 
   const fetchDashboardData = async () => {
     try {
-      const res = await fetch('/api/dashboard');
+      const res = await fetch('/api/dashboard', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+      
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || 'Failed to fetch dashboard data');
@@ -36,6 +46,7 @@ export default function Dashboard() {
       const dashboardData = await res.json();
       setData(dashboardData);
     } catch (err) {
+      console.error('Dashboard error:', err);
       setError(err.message);
       toast.error(err.message);
     } finally {
@@ -43,10 +54,20 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen bg-base-200 p-4 flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  if (status === 'unauthenticated') {
+    return (
+      <div className="min-h-screen bg-base-200 p-4 flex items-center justify-center">
+        <div className="alert alert-error">
+          <span>Please log in to access the dashboard</span>
+        </div>
       </div>
     );
   }

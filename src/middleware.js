@@ -37,6 +37,9 @@ export const config = {
     '/profile/:path*',
     '/workouts/:path*',
     '/exercises/:path*',
+    '/api/dashboard/:path*',
+    '/api/workouts/:path*',
+    '/api/judo-classes/:path*',
     '/login',
     '/register'
   ]
