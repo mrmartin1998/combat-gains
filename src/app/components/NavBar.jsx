@@ -34,7 +34,7 @@ export default function NavBar() {
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
             <li><Link href="/dashboard" className={isActive('/dashboard')}>Dashboard</Link></li>
             <li><Link href="/workouts" className={isActive('/workouts')}>Workouts</Link></li>
-            <li><Link href="/workouts/templates" className={isActive('/workouts/templates')}>Templates</Link></li>
+            {/* <li><Link href="/workouts/templates" className={isActive('/workouts/templates')}>Templates</Link></li> */}
             <li><Link href="/judo" className={isActive('/judo')}>Judo Classes</Link></li>
           </ul>
         </div>
@@ -45,7 +45,7 @@ export default function NavBar() {
         <ul className="menu menu-horizontal px-1">
           <li><Link href="/dashboard" className={isActive('/dashboard')}>Dashboard</Link></li>
           <li><Link href="/workouts" className={isActive('/workouts')}>Workouts</Link></li>
-          <li><Link href="/workouts/templates" className={isActive('/workouts/templates')}>Templates</Link></li>
+          {/* <li><Link href="/workouts/templates" className={isActive('/workouts/templates')}>Templates</Link></li> */}
           <li><Link href="/judo" className={isActive('/judo')}>Judo Classes</Link></li>
         </ul>
       </div>
