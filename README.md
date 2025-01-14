@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Combat Gains
 
-## Getting Started
+Combat Gains is a comprehensive training management platform designed specifically for martial artists and strength training enthusiasts. Track both your martial arts progression and strength training journey in one unified platform.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Current Features ✅
+- **User Authentication**
+  - Secure registration and login system
+  - Protected routes and session management
+  - Profile management
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Exercise Management**
+  - Comprehensive exercise database
+  - Custom exercise creation
+  - Exercise categorization by muscle groups and equipment
+  - Detailed exercise instructions and descriptions
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### In Development 🟡
+- **Exercise Selection System**
+  - Searchable exercise dropdown
+  - Exercise metadata display
+  - Muscle group and equipment filtering
+  - Recent and favorite exercises tracking
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Planned Features ❌
+- **Workout Management**
+  - Create and log workout sessions
+  - Track sets, reps, and weights
+  - Save and load workout templates
+  - View workout history
 
-## Learn More
+- **Judo Training Module**
+  - Log judo classes and techniques
+  - Track belt progression
+  - Technique library
+  - Partner work and sparring logs
 
-To learn more about Next.js, take a look at the following resources:
+- **Analytics Dashboard**
+  - Progress tracking
+  - Performance metrics
+  - Achievement milestones
+  - Training summaries
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Frontend
+- Next.js 14 (App Router)
+- React 18
+- Tailwind CSS
+- DaisyUI
+- Lucide React Icons
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Backend
+- Next.js API Routes
+- MongoDB with Mongoose
+- JWT Authentication
+- bcryptjs for password hashing
