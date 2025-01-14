@@ -16,32 +16,6 @@ Combat Gains is a comprehensive training management platform designed specifical
   - Exercise categorization by muscle groups and equipment
   - Detailed exercise instructions and descriptions
 
-### In Development 🟡
-- **Exercise Selection System**
-  - Searchable exercise dropdown
-  - Exercise metadata display
-  - Muscle group and equipment filtering
-  - Recent and favorite exercises tracking
-
-### Planned Features ❌
-- **Workout Management**
-  - Create and log workout sessions
-  - Track sets, reps, and weights
-  - Save and load workout templates
-  - View workout history
-
-- **Judo Training Module**
-  - Log judo classes and techniques
-  - Track belt progression
-  - Technique library
-  - Partner work and sparring logs
-
-- **Analytics Dashboard**
-  - Progress tracking
-  - Performance metrics
-  - Achievement milestones
-  - Training summaries
-
 ## Tech Stack
 
 ### Frontend
