@@ -29,4 +29,3 @@ Combat Gains is a comprehensive training management platform designed specifical
 - Next.js API Routes
 - MongoDB with Mongoose
 - JWT Authentication
-- bcryptjs for password hashing
