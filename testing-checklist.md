@@ -2,18 +2,18 @@
 
 ## 1. Authentication System
 ### User Registration
-- [ ] Email validation works correctly
-- [ ] Password requirements are enforced
-- [ ] Duplicate email prevention works
-- [ ] Success message displays properly
-- [ ] Database entry is created correctly
+- [x] Email validation works correctly
+- [x] Password requirements are enforced
+- [x] Duplicate email prevention works
+- [x] Success message displays properly
+- [x] Database entry is created correctly
 
 ### Login System
-- [ ] Valid credentials work
-- [ ] Invalid credentials are handled properly
-- [ ] "Remember me" functionality works
-- [ ] Redirect after login works correctly
-- [ ] Session persists as expected
+- [x] Valid credentials work
+- [x] Invalid credentials are handled properly
+- [x] "Remember me" functionality works
+- [x] Redirect after login works correctly
+- [x] Session persists as expected
 
 ### Protected Routes
 - [ ] Unauthorized users can't access protected pages
@@ -22,87 +22,98 @@
 
 ## 2. Exercise Management
 ### Exercise Listing
-- [ ] All seeded exercises display correctly
-- [ ] Search functionality works
-- [ ] Filtering works for:
-  - [ ] Primary muscle groups
-  - [ ] Equipment type
-  - [ ] Exercise type
+- [x] All seeded exercises display correctly
+- [x] Search functionality works
+- [x] Filtering works for:
+  - [x] Primary muscle groups
+  - [x] Equipment type
+  - [x] Exercise type
+
+Issues:
+  - Creating a new workout from the dashboard does not work. takes me to workouts/new and it should be workouts/create.
+  - There is no dedicated way to access the create exercise page, i need to access it manually through the url.
+  - Remove search icon. 
 
 ### Exercise Details
-- [ ] Exercise name displays correctly
-- [ ] Description shows properly
-- [ ] Instructions are clear and formatted
-- [ ] Muscle groups are listed correctly
-- [ ] Equipment required is shown
+- [x] Exercise name displays correctly
+- [x] Description shows properly
+- [x] Instructions are clear and formatted
+- [x] Muscle groups are listed correctly
+- [x] Equipment required is shown
 
 ### Exercise Creation
-- [ ] Form validation works
-- [ ] Required fields are enforced
-- [ ] Public/private flag works
-- [ ] Exercise saves to database
-- [ ] Success/error messages display
+- [x] Form validation works
+- [x] Required fields are enforced
+- [x] Public/private flag works
+- [x] Exercise saves to database
+- [x] Success/error messages display
 
 ## 3. UI/UX Testing
 ### Navigation
-- [ ] All navigation links work
-- [ ] Mobile menu functions correctly
-- [ ] Active states show correctly
-- [ ] Navigation is responsive
+- [x] All navigation links work
+- [x] Mobile menu functions correctly
+- [x] Active states show correctly
+- [x] Navigation is responsive
 
 ### Landing Page
-- [ ] Hero section displays properly
-- [ ] "Get Started" button works
-- [ ] "Login" button works
-- [ ] Feature cards display correctly
-- [ ] All images load properly
+- [x] Hero section displays properly
+- [x] "Get Started" button works
+- [x] "Login" button works
+- [x] Feature cards display correctly
+- [x] All images load properly
 
 ### About Page
-- [ ] Content loads correctly
-- [ ] Layout is responsive
-- [ ] Images load properly
+- [x] Content loads correctly
+- [x] Layout is responsive
+- [x] Images load properly
 
 ## 4. Cross-browser Testing
 Test on:
-- [ ] Chrome
-- [ ] Firefox
-- [ ] Safari
-- [ ] Edge
+- [x] Chrome
+- [x] Firefox
+- [x] Safari
+- [x] Edge
 
 ## 5. Mobile Testing
 ### Responsive Design
-- [ ] Works on phone screens (320px+)
-- [ ] Works on tablets (768px+)
-- [ ] Works on desktop (1024px+)
-- [ ] Portrait orientation
-- [ ] Landscape orientation
+- [x] Works on phone screens (320px+)
+- [x] Works on tablets (768px+)
+- [x] Works on desktop (1024px+)
+- [x] Portrait orientation
+- [x] Landscape orientation
+
+Issues:
+  - The mobile responsiveness is horrible.
 
 ### Mobile Interactions
-- [ ] Touch targets are large enough
-- [ ] Swipe gestures work (if implemented)
-- [ ] Forms are usable on mobile
-- [ ] No horizontal scrolling issues
+- [x] Touch targets are large enough
+- [x] Swipe gestures work (if implemented)
+- [x] Forms are usable on mobile
+- [x] No horizontal scrolling issues
+
+Issues:
+  - The mobile responsiveness is horrible.
 
 ## 6. Error Handling
-- [ ] Invalid form submissions show errors
-- [ ] Network errors are handled gracefully
-- [ ] Database connection issues show proper message
-- [ ] 404 pages work correctly
-- [ ] API errors show user-friendly messages
+- [x] Invalid form submissions show errors
+- [x] Network errors are handled gracefully
+- [x] Database connection issues show proper message
+- [x] 404 pages work correctly
+- [x] API errors show user-friendly messages
 
 ## 7. Performance Testing
-- [ ] Page load times are acceptable
-- [ ] Images load efficiently
-- [ ] Database queries are fast
-- [ ] No memory leaks
-- [ ] Smooth animations/transitions
+- [x] Page load times are acceptable
+- [x] Images load efficiently
+- [x] Database queries are fast
+- [x] No memory leaks
+- [x] Smooth animations/transitions
 
 ## 8. Security Testing
-- [ ] HTTPS is working
-- [ ] Authentication tokens work correctly
-- [ ] No sensitive information in URLs
-- [ ] Protected API endpoints are secure
-- [ ] Form inputs are sanitized
+- [x] HTTPS is working
+- [x] Authentication tokens work correctly
+- [x] No sensitive information in URLs
+- [x] Protected API endpoints are secure
+- [x] Form inputs are sanitized
 
 ## Notes
 - Add any bugs found during testing here
