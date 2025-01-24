@@ -61,18 +61,13 @@ export default function Exercises() {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="form-control">
-              <div className="input-group">
-                <span>
-                  <Search className="h-4 w-4" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search exercises..."
-                  className="input input-bordered w-full"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
+              <input
+                type="text"
+                placeholder="Search exercises..."
+                className="input input-bordered w-full"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
         </div>
