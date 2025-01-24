@@ -108,7 +108,7 @@ export default function Dashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link href="/workouts/new" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+          <Link href="/workouts/create" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
             <div className="card-body flex flex-row items-center">
               <Dumbbell className="w-6 h-6" />
               <h2 className="card-title">New Workout</h2>

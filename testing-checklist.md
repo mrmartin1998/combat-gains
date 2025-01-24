@@ -32,7 +32,7 @@
 Issues:
   - Creating a new workout from the dashboard does not work. takes me to workouts/new and it should be workouts/create.
   - There is no dedicated way to access the create exercise page, i need to access it manually through the url.
-  - Remove search icon. 
+  - Remove search icon from the exercise listing page.
 
 ### Exercise Details
 - [x] Exercise name displays correctly
