@@ -86,59 +86,65 @@ export default function Dashboard() {
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Stats Overview */}
-        <div className="stats shadow bg-base-100 w-full">
-          <div className="stat">
-            <div className="stat-title">Total Workouts</div>
-            <div className="stat-value">{data?.stats.totalWorkouts || 0}</div>
-            <div className="stat-desc">Since you started</div>
+        <div className="flex flex-col sm:stats shadow bg-base-100 w-full">
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">Total Workouts</div>
+              <div className="stat-desc text-xs sm:text-sm">Since you started</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl">{data?.stats.totalWorkouts || 0}</div>
           </div>
-          <div className="stat">
-            <div className="stat-title">Judo Classes</div>
-            <div className="stat-value">{data?.stats.totalJudoClasses || 0}</div>
-            <div className="stat-desc">Total attended</div>
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">Judo Classes</div>
+              <div className="stat-desc text-xs sm:text-sm">Total attended</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl">{data?.stats.totalJudoClasses || 0}</div>
           </div>
-          <div className="stat">
-            <div className="stat-title">This Month</div>
-            <div className="stat-value text-primary">
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">This Month</div>
+              <div className="stat-desc text-xs sm:text-sm">Training sessions</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl">
               {(data?.stats.thisMonth.workouts || 0) + (data?.stats.thisMonth.judoClasses || 0)}
             </div>
-            <div className="stat-desc">Training sessions</div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
           <Link href="/workouts/create" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-            <div className="card-body flex flex-row items-center">
-              <Dumbbell className="w-6 h-6" />
-              <h2 className="card-title">New Workout</h2>
+            <div className="card-body p-3 md:p-6 flex flex-row items-center">
+              <Dumbbell className="w-5 h-5 md:w-6 md:h-6" />
+              <h2 className="card-title text-sm md:text-base">New Workout</h2>
             </div>
           </Link>
           <Link href="/judo-classes/new" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-            <div className="card-body flex flex-row items-center">
-              <Calendar className="w-6 h-6" />
-              <h2 className="card-title">Log Judo Class</h2>
+            <div className="card-body p-3 md:p-6 flex flex-row items-center">
+              <Calendar className="w-5 h-5 md:w-6 md:h-6" />
+              <h2 className="card-title text-sm md:text-base">Log Judo Class</h2>
             </div>
           </Link>
           <Link href="/workouts/templates" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-            <div className="card-body flex flex-row items-center">
-              <Plus className="w-6 h-6" />
-              <h2 className="card-title">Workout Templates</h2>
+            <div className="card-body p-3 md:p-6 flex flex-row items-center">
+              <Plus className="w-5 h-5 md:w-6 md:h-6" />
+              <h2 className="card-title text-sm md:text-base">Workout Templates</h2>
             </div>
           </Link>
           <Link href="/progress" className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
-            <div className="card-body flex flex-row items-center">
-              <Trophy className="w-6 h-6" />
-              <h2 className="card-title">View Progress</h2>
+            <div className="card-body p-3 md:p-6 flex flex-row items-center">
+              <Trophy className="w-5 h-5 md:w-6 md:h-6" />
+              <h2 className="card-title text-sm md:text-base">View Progress</h2>
             </div>
           </Link>
         </div>
 
         {/* Recent Activity */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
           {/* Recent Workouts */}
           <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
+            <div className="card-body p-3 md:p-6">
               <h2 className="card-title flex items-center gap-2">
                 <Dumbbell className="w-5 h-5" />
                 Recent Workouts
@@ -173,7 +179,7 @@ export default function Dashboard() {
 
           {/* Recent Judo Classes */}
           <div className="card bg-base-100 shadow-xl">
-            <div className="card-body">
+            <div className="card-body p-3 md:p-6">
               <h2 className="card-title flex items-center gap-2">
                 <History className="w-5 h-5" />
                 Recent Judo Classes
