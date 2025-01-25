@@ -42,7 +42,7 @@ export default function CreateWorkout() {
   const addExercise = () => {
     setWorkout({
       ...workout,
-      exercises: [...workout.exercises, { name: '', sets: [{ reps: 0, weight: 0, notes: '' }] }]
+      exercises: [...workout.exercises, { name: '', sets: [{ reps: "", weight: "", notes: "" }] }]
     });
   };
 
@@ -62,7 +62,7 @@ export default function CreateWorkout() {
 
   const addSet = (exerciseIndex) => {
     const newExercises = [...workout.exercises];
-    newExercises[exerciseIndex].sets.push({ reps: 0, weight: 0, notes: '' });
+    newExercises[exerciseIndex].sets.push({ reps: "", weight: "", notes: "" });
     setWorkout({ ...workout, exercises: newExercises });
   };
 
@@ -208,14 +208,51 @@ export default function CreateWorkout() {
                     </button>
                   </div>
 
-                  <div className="overflow-x-auto">
+                  <div className="block sm:hidden">
+                    {exercise.sets.map((set, setIndex) => (
+                      <div key={setIndex} className="flex gap-2 items-center mb-2 bg-base-200 p-2 rounded-lg">
+                        <div className="w-8 text-center font-medium">{setIndex + 1}</div>
+                        <div className="flex-1 flex gap-2">
+                          <div className="flex-1">
+                            <div className="text-xs text-center mb-1">Reps</div>
+                            <input
+                              type="number"
+                              className="input input-bordered input-sm w-full text-center"
+                              value={set.reps}
+                              onChange={(e) => updateSet(exerciseIndex, setIndex, 'reps', e.target.value)}
+                              min="0"
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-xs text-center mb-1">Weight (kg)</div>
+                            <input
+                              type="number"
+                              className="input input-bordered input-sm w-full text-center"
+                              value={set.weight}
+                              onChange={(e) => updateSet(exerciseIndex, setIndex, 'weight', e.target.value)}
+                              min="0"
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="btn btn-ghost btn-sm px-2 mt-6"
+                            onClick={() => removeSet(exerciseIndex, setIndex)}
+                            disabled={exercise.sets.length === 1}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="hidden sm:block overflow-x-auto">
                     <table className="table w-full">
                       <thead>
                         <tr>
                           <th className="text-center">Set</th>
                           <th className="text-center">Reps</th>
                           <th className="text-center">Weight (kg)</th>
-                          <th className="text-left">Notes</th>
                           <th className="text-center">Actions</th>
                         </tr>
                       </thead>
@@ -241,15 +278,7 @@ export default function CreateWorkout() {
                                 min="0"
                               />
                             </td>
-                            <td className="text-center">
-                              <input
-                                type="text"
-                                className="input input-bordered w-full"
-                                value={set.notes}
-                                onChange={(e) => updateSet(exerciseIndex, setIndex, 'notes', e.target.value)}
-                                placeholder="Set notes..."
-                              />
-                            </td>
+                            
                             <td className="text-center">
                               <button
                                 type="button"
@@ -257,7 +286,7 @@ export default function CreateWorkout() {
                                 onClick={() => removeSet(exerciseIndex, setIndex)}
                                 disabled={exercise.sets.length === 1}
                               >
-                                Remove
+                                X
                               </button>
                             </td>
                           </tr>
@@ -280,17 +309,21 @@ export default function CreateWorkout() {
             ))}
           </div>
 
-                    <div className="flex justify-end mb-4">
-            <button
-              type="button"
-              className="btn btn-primary btn-sm"
-              onClick={addExercise}
-            >
-              <Plus className="h-4 w-4" />
-              Add Exercise
-            </button>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-bold">Exercises</h2>
+              <div className="flex justify-end mt-4 mb-4">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={addExercise}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Exercise
+                </button>
+              </div>
+            </div>
           </div>
-
           <button type="submit" className="btn btn-primary w-full" disabled={loading}>
             {loading ? 'Creating...' : 'Create Workout'}
           </button>
