@@ -1,130 +1,113 @@
-# Combat Gains - Production Testing Checklist
+# Combat Gains - Production Testing Checklist (Round 2)
 
-## 1. Authentication System
-### User Registration
-- [x] Email validation works correctly
-- [x] Password requirements are enforced
-- [x] Duplicate email prevention works
-- [x] Success message displays properly
-- [x] Database entry is created correctly
+## 1. User Experience Testing
+### Mobile Experience
+- [ ] Test all forms on mobile devices
+- [ ] Check touch target sizes
+- [ ] Verify navigation menu usability
+- [ ] Test landscape/portrait transitions
+- [ ] Verify input fields are easily accessible
 
-### Login System
-- [x] Valid credentials work
-- [x] Invalid credentials are handled properly
-- [x] "Remember me" functionality works
-- [x] Redirect after login works correctly
-- [x] Session persists as expected
+### Desktop Experience
+- [ ] Test responsive layouts at various breakpoints
+- [ ] Verify hover states and interactions
+- [ ] Check form validation feedback
+- [ ] Test keyboard navigation
+- [ ] Verify dropdown menus behavior
 
-### Protected Routes
-- [ ] Unauthorized users can't access protected pages
-- [ ] Redirect to login works
-- [ ] Authenticated users can access protected pages
+## 2. Workout Management
+### Workout Creation
+- [ ] Test exercise search and selection
+- [ ] Verify set/rep input functionality
+- [ ] Test weight input with decimals
+- [ ] Check exercise reordering
+- [ ] Verify form validation
+- [ ] Test notes field functionality
 
-## 2. Exercise Management
-### Exercise Listing
-- [x] All seeded exercises display correctly
-- [x] Search functionality works
-- [x] Filtering works for:
-  - [x] Primary muscle groups
-  - [x] Equipment type
-  - [x] Exercise type
+### Workout History
+- [ ] Check workout listing and filtering
+- [ ] Test date range selection
+- [ ] Verify workout details view
+- [ ] Test workout editing
+- [ ] Check deletion confirmation
 
-Issues:
-  - Creating a new workout from the dashboard does not work. takes me to workouts/new and it should be workouts/create.
-  - There is no dedicated way to access the create exercise page, i need to access it manually through the url.
-  - Remove search icon from the exercise listing page.
+## 3. Exercise Management
+### Exercise Library
+- [ ] Test search functionality
+- [ ] Verify filter combinations
+- [ ] Check exercise details display
+- [ ] Test exercise creation flow
+- [ ] Verify exercise categorization
 
-### Exercise Details
-- [x] Exercise name displays correctly
-- [x] Description shows properly
-- [x] Instructions are clear and formatted
-- [x] Muscle groups are listed correctly
-- [x] Equipment required is shown
+### Exercise Selection
+- [ ] Test search while selecting
+- [ ] Verify recently used exercises
+- [ ] Check muscle group filtering
+- [ ] Test equipment filtering
 
-### Exercise Creation
-- [x] Form validation works
-- [x] Required fields are enforced
-- [x] Public/private flag works
-- [x] Exercise saves to database
-- [x] Success/error messages display
+## 4. Judo Training Module
+### Class Logging
+- [ ] Test technique recording
+- [ ] Verify partner work logging
+- [ ] Check sparring session tracking
+- [ ] Test duration tracking
+- [ ] Verify notes functionality
 
-## 3. UI/UX Testing
-### Navigation
-- [x] All navigation links work
-- [x] Mobile menu functions correctly
-- [x] Active states show correctly
-- [x] Navigation is responsive
+### Progress Tracking
+- [ ] Check technique list growth
+- [ ] Verify class history display
+- [ ] Test progress visualization
+- [ ] Check achievement tracking
 
-### Landing Page
-- [x] Hero section displays properly
-- [x] "Get Started" button works
-- [x] "Login" button works
-- [x] Feature cards display correctly
-- [x] All images load properly
+## 5. Data Management
+### Data Entry
+- [ ] Test bulk entry capabilities
+- [ ] Verify data validation
+- [ ] Check error messages
+- [ ] Test input sanitization
 
-### About Page
-- [x] Content loads correctly
-- [x] Layout is responsive
-- [x] Images load properly
+### Data Display
+- [ ] Verify sorting functionality
+- [ ] Test filtering mechanisms
+- [ ] Check data export options
+- [ ] Verify data visualization
 
-## 4. Cross-browser Testing
-Test on:
-- [x] Chrome
-- [x] Firefox
-- [x] Safari
-- [x] Edge
+## 6. Performance Testing
+### Load Times
+- [ ] Measure initial page load
+- [ ] Test data-heavy page performance
+- [ ] Check image loading optimization
+- [ ] Verify API response times
 
-## 5. Mobile Testing
-### Responsive Design
-- [x] Works on phone screens (320px+)
-- [x] Works on tablets (768px+)
-- [x] Works on desktop (1024px+)
-- [x] Portrait orientation
-- [x] Landscape orientation
-
-Issues:
-  - The mobile responsiveness is horrible.
-
-### Mobile Interactions
-- [x] Touch targets are large enough
-- [x] Swipe gestures work (if implemented)
-- [x] Forms are usable on mobile
-- [x] No horizontal scrolling issues
-
-Issues:
-  - The mobile responsiveness is horrible.
-
-## 6. Error Handling
-- [x] Invalid form submissions show errors
-- [x] Network errors are handled gracefully
-- [x] Database connection issues show proper message
-- [x] 404 pages work correctly
-- [x] API errors show user-friendly messages
-
-## 7. Performance Testing
-- [x] Page load times are acceptable
-- [x] Images load efficiently
-- [x] Database queries are fast
-- [x] No memory leaks
-- [x] Smooth animations/transitions
-
-## 8. Security Testing
-- [x] HTTPS is working
-- [x] Authentication tokens work correctly
-- [x] No sensitive information in URLs
-- [x] Protected API endpoints are secure
-- [x] Form inputs are sanitized
+### Resource Usage
+- [ ] Monitor memory usage
+- [ ] Check CPU utilization
+- [ ] Test battery impact on mobile
+- [ ] Verify offline capabilities
 
 ## Notes
-- Add any bugs found during testing here
-- Document any performance issues
-- Note browser-specific problems
-- List any security concerns
+Add findings here as you test:
+1. Feature Requests:
+   - 
+2. Bug Reports:
+   - 
+3. UX Improvements:
+   - 
+4. Performance Issues:
+   - 
 
 ## Testing Environment
-- Production URL: [Add URL here]
-- Database: MongoDB Atlas
-- Deployment: Vercel
+- Production URL: [URL]
+- Test Devices:
+  * Mobile: [List devices]
+  * Tablet: [List devices]
+  * Desktop: [List browsers]
+- Test Date: [Current Date]
+- Tester: [Name]
 
-Last Updated: [Date]
-Tested By: [Name] 
+## Priority Levels
+- 🔴 Critical (Must fix immediately)
+- 🟡 Important (Should fix soon)
+- 🟢 Enhancement (Nice to have)
+
+Remember to create individual GitHub issues for each finding with appropriate labels and priority levels. 
