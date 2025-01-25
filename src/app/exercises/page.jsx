@@ -46,12 +46,12 @@ export default function Exercises() {
   return (
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div className="navbar bg-base-100 rounded-box shadow">
+        <div className="navbar bg-base-100 rounded-box shadow flex-col sm:flex-row gap-2 sm:gap-0">
           <div className="flex-1">
             <h1 className="text-2xl font-bold">Exercises</h1>
           </div>
-          <div className="flex-none">
-            <Link href="/exercises/create" className="btn btn-primary">
+          <div className="w-full sm:w-auto">
+            <Link href="/exercises/create" className="btn btn-primary w-full sm:w-auto">
               <Plus className="h-4 w-4" />
               New Exercise
             </Link>
