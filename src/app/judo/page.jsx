@@ -37,20 +37,31 @@ export default function JudoClasses() {
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header with Stats */}
-        <div className="stats shadow bg-base-100 w-full">
-          <div className="stat">
-            <div className="stat-title">Total Classes</div>
-            <div className="stat-value">{classes.length}</div>
+        <div className="flex flex-col sm:stats shadow bg-base-100 w-full">
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">Total Classes</div>
+              <div className="stat-desc text-xs sm:text-sm">Since you started</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl">{classes.length}</div>
           </div>
-          <div className="stat">
-            <div className="stat-title">This Month</div>
-            <div className="stat-value text-primary">
+          
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">This Month</div>
+              <div className="stat-desc text-xs sm:text-sm">Classes attended</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl text-primary">
               {classes.filter(c => new Date(c.date).getMonth() === new Date().getMonth()).length}
             </div>
           </div>
-          <div className="stat">
-            <div className="stat-title">Average Duration</div>
-            <div className="stat-value text-secondary">
+          
+          <div className="flex justify-between items-center p-3 sm:stat">
+            <div>
+              <div className="stat-title text-sm sm:text-base">Average Duration</div>
+              <div className="stat-desc text-xs sm:text-sm">Per class</div>
+            </div>
+            <div className="stat-value text-xl sm:text-4xl text-secondary">
               {Math.round(classes.reduce((acc, c) => acc + c.duration, 0) / classes.length || 0)}m
             </div>
           </div>
